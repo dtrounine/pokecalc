@@ -1,0 +1,157 @@
+package ru.dtrunin.ifmodroid.pokecalc;
+
+import android.content.res.TypedArray;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewParent;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+public class PokeCalcActivity extends AppCompatActivity implements
+        Spinner.OnItemSelectedListener,
+        View.OnClickListener {
+
+    ImageView pokemonImageView;
+    Spinner pokemonSpinnerView;
+    EditText powerUpCostView;
+    EditText cpView;
+    EditText hpView;
+    Button doCalcButton;
+    TextView outputText;
+    ScrollView scrollView;
+
+    TypedArray pokemonImageIds;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_poke_calc);
+
+        pokemonImageView = (ImageView) findViewById(R.id.pokemon_img);
+        pokemonSpinnerView = (Spinner) findViewById(R.id.pokemon_spinner);
+        powerUpCostView = (EditText) findViewById(R.id.powerup_cost_text);
+        cpView = (EditText) findViewById(R.id.cp_text);
+        hpView = (EditText) findViewById(R.id.hp_text);
+        doCalcButton = (Button) findViewById(R.id.do_calc_btn);
+        outputText = (TextView) findViewById(R.id.text_output);
+        scrollView = (ScrollView) findViewById(R.id.scrol_view);
+
+        pokemonSpinnerView.setOnItemSelectedListener(this);
+        pokemonSpinnerView.setSelection(Spinner.INVALID_POSITION);
+
+        doCalcButton.setOnClickListener(this);
+
+        pokemonImageIds = getResources().obtainTypedArray(R.array.pokemon_images);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+        final int imageId = pokemonImageIds.getResourceId(pos, 0);
+        pokemonImageView.setImageResource(imageId);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        pokemonImageView.setImageResource(0);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == doCalcButton) {
+            calculateIV();
+        }
+    }
+
+    private void calculateIV() {
+        final int pokemonIndex = pokemonSpinnerView.getSelectedItemPosition();
+        final int baseStamina = getResources().getIntArray(R.array.pokemon_stamina)[pokemonIndex];
+        final int baseAttack = getResources().getIntArray(R.array.pokemon_attack)[pokemonIndex];
+        final int baseDefense = getResources().getIntArray(R.array.pokemon_defense)[pokemonIndex];
+
+        final int cp = getInt(cpView, 0);
+        final int hp = getInt(hpView, 0);
+        final int powerUpCost = getInt(powerUpCostView, 0);
+
+        final SpannableStringBuilder text = new SpannableStringBuilder();
+        text.append("Base stamina: ").append(Integer.toString(baseStamina)).append('\n');
+        text.append("Base attack: ").append(Integer.toString(baseAttack)).append('\n');
+        text.append("Base defense: ").append(Integer.toString(baseDefense)).append('\n');
+        text.append('\n');
+
+        if (PokeMath.isAllowedPowerUpStardustCost(powerUpCost)) {
+            int minLevel = PokeMath.getMinLevelForPowerUpStardustCost(powerUpCost);
+            int maxLevel = PokeMath.getMaxLevelForPowerUpStardustCost(powerUpCost);
+
+            text.append("Min level: ").append(Float.toString(minLevel * 0.5f)).append('\n');
+            text.append("Max level: ").append(Float.toString(maxLevel * 0.5f)).append('\n');
+            text.append('\n');
+
+            for (int level = minLevel; level <= maxLevel; level++) {
+                for (int ivStamina = 0; ivStamina <= 15; ivStamina++) {
+                    final int stamina = baseStamina + ivStamina;
+                    final int calculatedHp = PokeMath.getHp(level, stamina);
+
+
+                    if (calculatedHp != hp) {
+                        continue;
+                    }
+
+                    for (int ivAttack = 0; ivAttack <= 15; ivAttack++) {
+                        final int attack = baseAttack + ivAttack;
+
+                        for (int ivDefense = 0; ivDefense <= 15; ivDefense++) {
+                            final int defense = baseDefense + ivDefense;
+
+                            final int calculatedCp = PokeMath.getCp(level, stamina, attack,
+                                    defense);
+                            if (calculatedCp == cp) {
+                                text.append("Level=").append(Float.toString(level * 0.5f));
+                                text.append(", Attack=").append(Integer.toString(ivAttack));
+                                text.append(", Defense=").append(Integer.toString(ivDefense));
+                                text.append(", Stamina=").append(Integer.toString(ivStamina));
+                                text.append('\n');
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else {
+            text.append("Not allowed value of power up stardust cost: ")
+                    .append(Integer.toString(powerUpCost))
+                    .append('\n');
+        }
+
+        outputText.setVisibility(View.VISIBLE);
+        outputText.setText(text);
+        outputText.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, outputText.getTop()
+                        + ((View) outputText.getParent()).getTop());
+
+            }
+        });
+    }
+
+    private int getInt(TextView textView, int defaultValue) {
+        final CharSequence textValue = textView.getText();
+
+        try {
+            return Integer.parseInt(textValue.toString());
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "Failed to parse integer value: " + textValue);
+        }
+        return defaultValue;
+    }
+
+    private static final String TAG = "PokeCalc";
+}

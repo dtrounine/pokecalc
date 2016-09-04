@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PokeCalc</string>
+
+    <string name="powerup_cost">Стоимость апгрейда</string>
+    <string name="do_calc_iv">Вычислить IV</string>
+    <string name="cp">CP</string>
+    <string name="hp">HP</string>
+</resources>

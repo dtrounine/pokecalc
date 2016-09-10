@@ -14,52 +14,127 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/cyan_100">
 
         <ImageView
             android:id="@+id/pokemon_img"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:scaleType="centerInside"/>
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_corners_bg"/>
 
         <Spinner
             android:id="@+id/pokemon_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
             android:minHeight="24dp"
             android:minWidth="160dp"
+            android:textSize="24sp"
+            android:padding="8dp"
             android:entries="@array/pokemon_names"/>
 
-        <EditText
-            android:id="@+id/powerup_cost_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/powerup_cost"
-            android:inputType="number"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
 
-        <EditText
-            android:id="@+id/cp_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/cp"
-            android:inputType="number"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="12dp"
+                android:textSize="@dimen/prompt_text_size"
+                android:text="@string/powerup_cost"/>
 
-        <EditText
-            android:id="@+id/hp_text"
+            <EditText
+                android:id="@+id/powerup_cost_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/powerup_error_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/hp"
-            android:inputType="number"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-8dp"
+            android:textAppearance="@style/TextAppearance_InputError"
+            android:text="@string/invalid_value"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="12dp"
+                android:textSize="@dimen/prompt_text_size"
+                android:text="@string/cp"/>
+
+            <EditText
+                android:id="@+id/cp_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/cp_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-8dp"
+            android:textAppearance="@style/TextAppearance_InputError"
+            android:text="@string/invalid_value"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="12dp"
+                android:textSize="@dimen/prompt_text_size"
+                android:text="@string/hp"/>
+            <EditText
+                android:id="@+id/hp_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/hp_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-8dp"
+            android:textAppearance="@style/TextAppearance_InputError"
+            android:text="@string/invalid_value"/>
 
         <Button
             android:id="@+id/do_calc_btn"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
             android:padding="16dp"
             android:text="@string/do_calc_iv"/>
 
@@ -69,6 +144,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:singleLine="false"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:fontFamily="monospace"
+            android:textSize="14sp"
+            android:textColor="#333"
+            android:padding="8dp"
+            android:background="@drawable/rounded_corners_bg"/>
     </LinearLayout>
 </ScrollView>

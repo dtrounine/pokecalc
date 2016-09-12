@@ -162,7 +162,9 @@ HP = stamina * SQRT(level_factor) = 182 * SQRT(0.2676979035) = 94.1659458378346
 
 ## Задание
 
-1) Создать верстку основного экрана приложения, которому соответствует класс PokeCalcActivity. Для этого создайте XML файл в папке layout и используйте его для инициализации экрана в методе PokeCalcActivity.onCreate(). На экране должны быть следующие элементы:
+### 1 Верстка
+
+Создать верстку основного экрана приложения, которому соответствует класс PokeCalcActivity. Для этого создайте XML файл в папке layout и используйте его для инициализации экрана в методе PokeCalcActivity.onCreate(). На экране должны быть следующие элементы:
 
 * Выпадающий список с названиями покемонов (использовать Spinner)
 * Изображение покемона (ImageView)
@@ -175,3 +177,36 @@ HP = stamina * SQRT(level_factor) = 182 * SQRT(0.2676979035) = 94.1659458378346
 Один из возомжных вариантов UI, который может получиться:
 
 <img src="https://github.com/dtrounine/pokecalc/blob/master/screenshots/poke_calc_layout.png" width="360px"/>
+
+### 2 Обработка выбора покемона
+
+Реализовать выбор покемона из выпадающего списка и отображение соответствующей ему картинки
+
+Выпадающий список (Spinner) должен содержать названия покемонов, которые определены в ресурсах в массиве R.arrray.pokemon_names (Или @array/pokemon_names в XML). Обработчик Spinner.OnItemSelectedListener должен загрузить изображение выбранного покемона из ресурсов. Для этого в ресурсах определен массив R.array.pokemon_images -- он содержит ID картинок для каждого возможного выбора. 
+
+Код для получения ID картинки может выглядеть приблизительно так:
+```Java
+int[] pokemonImageIds = getResources().obtainTypedArray(R.array.pokemon_images);
+int imageResId = pokemonImageIds[position]; // position берется из обработчика Spinner.OnItemSelectedListener
+```
+
+### 3 Обработка клика и вычисление
+
+* Сделать обработчик клика на кнопку "Вычислить"
+* По клику на кнопку должно запускаться вычисление скрытых параметров, используя в качестве входных данных значения, введенные в поля ввода Stardust, CP и HP, а также тип выбранного покемона
+* Базовые значения для каждого типа покемонов определены в ресурсах в массивах R.array.pokemon_stamina, R.array.pokemon_attack и R.array.pokemon_defense
+* Результат вычислений отобразить в отдельном текстовом поле (TextView)
+
+Некоторые вспомогательные функции, которые могут пригодиться для вычислений, определены в классе PokeMath. Например, там есть функция для вычисления level_factor, CP и HP. 
+
+Код для получения базовых значений может выглядеть так:
+```Java
+// position выбранного варианта берется из Spinner-а
+int baseStamina = getResources().getIntArray(R.array.pokemon_stamina)[position];
+int baseAttack = getResources().getIntArray(R.array.pokemon_attack)[position];
+int baseDefense = getResources().getIntArray(R.array.pokemon_defense)[position];
+```
+
+Результат может выглядеть приблизительно так:
+
+<img src="https://github.com/dtrounine/pokecalc/blob/master/screenshots/output_layout.png" width="360px"/>

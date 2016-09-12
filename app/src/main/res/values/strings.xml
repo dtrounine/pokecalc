@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PokeCalc</string>
+    <string name="app_name">Калькулятор Покемонов</string>
 
     <string name="powerup_cost">Stardust</string>
     <string name="do_calc_iv">Вычислить IV</string>

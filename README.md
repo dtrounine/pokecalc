@@ -159,3 +159,19 @@ HP = stamina * SQRT(level_factor) = 182 * SQRT(0.2676979035) = 94.1659458378346
 (31, 5, 1, 0)
 ```
 </details>
+
+## Задание
+
+1) Создать верстку основного экрана приложения, которому соответствует класс PokeCalcActivity. Для этого создайте XML файл в папке layout и используйте его для инициализации экрана в методе PokeCalcActivity.onCreate(). На экране должны быть следующие элементы:
+
+* Выпадающий список с названиями покемонов (использовать Spinner)
+* Изображение покемона (ImageView)
+* Поля ввода значений Stardust, CP, HP (EditText)
+* Описание полей (TextView)
+* Кнопка, запускающая вычисление (Button)
+
+Для организации верстки могут понадобиться классы LinearLayout, RelativeLayout, FrameLayout, асли все необходимые элементы не будут помещаться на экране, то может понадобиться ScrollView.
+
+Один из возомжных вариантов UI, который может получиться:
+
+<img src="https://github.com/dtrounine/pokecalc/blob/master/screenshots/poke_calc_layout.png" width="360px"/>

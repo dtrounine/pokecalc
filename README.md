@@ -83,6 +83,8 @@ HP = stamina * SQRT(level_factor)
 2. Из таблиц базовых характеристик по типу покемона взять значения base_attack, base_defense, base_stamina
 3. Из всех возможных комбинаций значений level (из интервала, полученного на шаге 1), iv_attack (от 0 до 15), iv_defense (от 0 до 15) и iv_stamina (от 0 до 15) выбрать те, которые при вычислении CP и HP по формулам, указанным выше, дают значения, введенные пользователем.
 
+Базовые значения attack, defense и stamina определены в ресурсах приложения: [pokemon_data.xml](https://github.com/dtrounine/pokecalc/blob/master/app/src/main/res/values/pokemon_data.xml). Также их можно найти в интернете -- например, [здесь](http://www.pokemongodb.net/2016/07/pokemon-by-attack.html).
+
 <details>
   <summary>Пример</summary>
 

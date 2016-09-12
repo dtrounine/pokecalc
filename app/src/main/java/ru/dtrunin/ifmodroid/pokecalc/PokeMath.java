@@ -135,46 +135,26 @@ public final class PokeMath {
     }
 
     public static int getCp(int level, int stamina, int attack, int defense) {
-        final double cpm = getCpMultiplier(level);
-        final double cp = attack * Math.sqrt(defense) * Math.sqrt(stamina) * cpm * cpm / 10.0;
+        final double levelFactor = getLevelFactor(level);
+        final double cp = attack * Math.sqrt(defense) * Math.sqrt(stamina) * levelFactor / 10.0;
         return (int) Math.round(Math.floor(cp));
     }
 
     public static int getHp(int level, int stamina) {
-        final double cp = getCpMultiplier(level);
-        final double hp = stamina * cp;
+        final double levelFactor = getLevelFactor(level);
+        final double hp = stamina * Math.sqrt(levelFactor);
         return (int) Math.round(Math.floor(hp));
     }
 
-    private static final double [] cp_2_80 = {
-            0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988,
-            0.3210876 , 0.34921268, 0.37523559, 0.39956728, 0.42250001,
-            0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395,
-            0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001,
-            0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934,
-            0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317,
-            0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384,
-            0.76739717, 0.7731865, 0.77893275, 0.78463697, 0.79030001
-    };
-
-    private static final double cp_correction = 0.009426125469;
-
-    private static double getCpMultiplier(int level) {
+    private static double getLevelFactor(int level) {
         checkLevelBounds(level);
-        int fracLevel = level / 2;
-        return cp_2_80[fracLevel - 1] + (2 * fracLevel == level ? 0 : cp_correction);
-
-
-
-//        if (level <= 20) {
-//            return 0.01885225 * 0.5 * level - 0.01001625;
-//        } else if (level <= 40) {
-//            return 0.01783805 * 0.5 * (level - 20) + 0.17850625;
-//        } else if (level <= 60) {
-//            return 0.01784981 * 0.5 * (level - 40) + 0.35688675;
-//        } else {
-//            return 0.00891892 * 0.5 * (level - 60) + 0.53538485;
-//        }
+        if (level <= 20) {
+            return 0.009426125 * level - 0.010016255;
+        } else if (level <= 60) {
+            return 0.0089219657 * level + 0.0000389325;
+        } else {
+            return 0.004459461 * level + 0.267817222;
+        }
     }
 
     private static void checkLevelBounds(int level) {

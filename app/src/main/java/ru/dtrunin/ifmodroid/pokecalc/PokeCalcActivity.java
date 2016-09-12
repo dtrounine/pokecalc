@@ -90,9 +90,14 @@ public class PokeCalcActivity extends AppCompatActivity implements
             int minLevel = PokeMath.getMinLevelForPowerUpStardustCost(powerUpCost);
             int maxLevel = PokeMath.getMaxLevelForPowerUpStardustCost(powerUpCost);
 
-            text.append("Min level: ").append(Float.toString(minLevel * 0.5f)).append('\n');
-            text.append("Max level: ").append(Float.toString(maxLevel * 0.5f)).append('\n');
+            text.append("Min possible level: ").append(Integer.toString(minLevel)).append('\n');
+            text.append("Max possible level: ").append(Integer.toString(maxLevel)).append('\n');
             text.append('\n');
+
+            text.append("Possible values of (level, attack, defense, stamina):").append('\n');
+            text.append('\n');
+
+            int totalCount = 0;
 
             for (int level = minLevel; level <= maxLevel; level++) {
                 for (int ivStamina = 0; ivStamina <= 15; ivStamina++) {
@@ -113,16 +118,19 @@ public class PokeCalcActivity extends AppCompatActivity implements
                             final int calculatedCp = PokeMath.getCp(level, stamina, attack,
                                     defense);
                             if (calculatedCp == cp) {
-                                text.append("Level=").append(Float.toString(level * 0.5f));
-                                text.append(", Attack=").append(Integer.toString(ivAttack));
-                                text.append(", Defense=").append(Integer.toString(ivDefense));
-                                text.append(", Stamina=").append(Integer.toString(ivStamina));
-                                text.append('\n');
+                                totalCount++;
+                                text.append("(").append(Integer.toString(level));
+                                text.append(", ").append(Integer.toString(ivAttack));
+                                text.append(", ").append(Integer.toString(ivDefense));
+                                text.append(", ").append(Integer.toString(ivStamina));
+                                text.append(")\n");
                             }
                         }
                     }
                 }
             }
+            text.append("\nTotal: ").append(Integer.toString(totalCount)).append(" variants")
+                    .append('\n');
 
         } else {
             text.append("Not allowed value of power up stardust cost: ")

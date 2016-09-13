@@ -219,4 +219,7 @@ int baseDefense = getResources().getIntArray(R.array.pokemon_defense)[position];
 
 ### 5 Поддержка разных конфигураций экрана
 
-TODO
+Создайте альтернативный вариант верстки для экрана в ландшафтной ориентации. Для этого создайте папку layout-land, а в ней файл верстки с тем же названием, что и в дефолтной конфигурации. Верстка должна содержать те же основные элементы с теми же ID, но располагаться они могут по-другому. Возможный вариант верстки может выглядеть так:
+
+<img src="https://github.com/dtrounine/pokecalc/blob/master/screenshots/poke_calc_layout_land.png" width="720px"/>
+

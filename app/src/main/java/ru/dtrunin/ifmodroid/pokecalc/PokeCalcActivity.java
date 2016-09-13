@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,10 +24,17 @@ public class PokeCalcActivity extends AppCompatActivity implements
     EditText cpView;
     EditText hpView;
     Button doCalcButton;
-    TextView outputText;
+    TextView outputTextView;
     ScrollView scrollView;
 
     TypedArray pokemonImageIds;
+
+    CharSequence outputText;
+
+    /**
+     * Key for saving/restoring the output text as CharSequence
+     */
+    private static final String KEY_OUTPUT_TEXT = "output_text";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,7 @@ public class PokeCalcActivity extends AppCompatActivity implements
         cpView = (EditText) findViewById(R.id.cp_text);
         hpView = (EditText) findViewById(R.id.hp_text);
         doCalcButton = (Button) findViewById(R.id.do_calc_btn);
-        outputText = (TextView) findViewById(R.id.text_output);
+        outputTextView = (TextView) findViewById(R.id.text_output);
         scrollView = (ScrollView) findViewById(R.id.scrol_view);
 
         pokemonSpinnerView.setOnItemSelectedListener(this);
@@ -50,6 +56,14 @@ public class PokeCalcActivity extends AppCompatActivity implements
         doCalcButton.setOnClickListener(this);
 
         pokemonImageIds = getResources().obtainTypedArray(R.array.pokemon_images);
+
+        if (savedInstanceState != null) {
+            outputText = savedInstanceState.getCharSequence(KEY_OUTPUT_TEXT, null);
+            if (outputText != null) {
+                outputTextView.setVisibility(View.VISIBLE);
+                outputTextView.setText(outputText);
+            }
+        }
     }
 
     @Override
@@ -138,16 +152,23 @@ public class PokeCalcActivity extends AppCompatActivity implements
                     .append('\n');
         }
 
-        outputText.setVisibility(View.VISIBLE);
-        outputText.setText(text);
-        outputText.post(new Runnable() {
+        outputTextView.setVisibility(View.VISIBLE);
+        outputTextView.setText(text);
+        this.outputText = text;
+        outputTextView.post(new Runnable() {
             @Override
             public void run() {
-                scrollView.smoothScrollTo(0, outputText.getTop()
-                        + ((View) outputText.getParent()).getTop());
+                scrollView.smoothScrollTo(0, outputTextView.getTop()
+                        + ((View) outputTextView.getParent()).getTop());
 
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharSequence(KEY_OUTPUT_TEXT, outputText);
     }
 
     private int getInt(TextView textView, int defaultValue) {
